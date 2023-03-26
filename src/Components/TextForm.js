@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function TextForm(props) {
+  
   const onupclick = () => {
     let newText = text.toUpperCase();
     setText(newText);
@@ -25,6 +26,7 @@ export default function TextForm(props) {
     let text = document.getElementById("myBox");
     text.select();
     navigator.clipboard.writeText(text.value);
+    document.getSelection().removeAllRanges();
     props.showAlert("Text copied", "success");
   };
   const onextraspaceclick = () => {
@@ -33,12 +35,12 @@ export default function TextForm(props) {
     props.showAlert("Extra spaces removed", "success");
   };
   const wordcount = () => {
-    let l = text.length;
-    if (text[l-1] === " ") {
-      return text.split(" ").length - 1;
-    } else {
-      return text.split(" ").length;
-    }
+    // let l = text.length;
+    // if (text[l-1] === " ") {
+    //   return text.split(" ").length - 1;
+    // } else {
+    //   return text.split(" ").length;}
+    return text.split(" ").filter((element)=>element.length!==0).length;
   };
   const onchange = (event) => {
     setText(event.target.value);
@@ -49,16 +51,16 @@ export default function TextForm(props) {
     <>
       <div
         className={`container my-3 text-${
-          props.mode === "light" ? "dark" : "light"
+          props.mode === "dark" ? "white" : "black"
         }`}
       >
-        <h1>{props.heading}</h1>
+        <h1 mb-4>{props.heading}</h1>
         <div className="mb-3">
           <textarea
             className="form-control"
             style={{
-              backgroundColor: props.mode === "light" ? "white" : "gray",
-              color: props.mode === "light" ? "#042743" : "white",
+              backgroundColor: props.mode === "dark" ? 'rgb(0,0,0)' : "white",
+              color: props.mode === "dark" ? "white" : "black",
             }}
             placeholder="Enter"
             value={text}
@@ -67,29 +69,29 @@ export default function TextForm(props) {
             id="myBox"
           />
         </div>
-        <button className="btn btn-primary mx-1" onClick={onupclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1" onClick={onupclick}>
           Convert to UpperCase
         </button>
-        <button className="btn btn-primary mx-1" onClick={ondownclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={ondownclick}>
           Convert to LowerCase
         </button>
-        <button className="btn btn-primary mx-1" onClick={onclearclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={onclearclick}>
           Clear
         </button>
-        <button className="btn btn-primary mx-1" onClick={onboldclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={onboldclick}>
           Bold
         </button>
-        <button className="btn btn-primary mx-1" onClick={oncopyclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={oncopyclick}>
           Copy Text
         </button>
-        <button className="btn btn-primary mx-1" onClick={onextraspaceclick}>
+        <button disabled={text.length===0} className="btn btn-primary mx-1 my-1" onClick={onextraspaceclick}>
           Remove Extra Spaces
         </button>
       </div>
       <hr />
       <div
         className={`container my-3 text-${
-          props.mode === "light" ? "dark" : "light"
+          props.mode === "dark" ? "white" : "black"
         }`}
       >
         <h1 className="my-2">Text-Summary</h1>
@@ -98,9 +100,9 @@ export default function TextForm(props) {
         <br />
         Characters: {text.length}
         <br />
-        Time taken to read the text: {0.008 * text.split(" ").length}
-        <h3>Preview</h3>
-        <p>{text.length > 0 ? text : "Enter something to preview"} </p>
+        Time taken to read the text: {0.008 * text.split(" ").filter((element)=>element.length!==0).length}
+        <h3 className= "my-2">Preview</h3>
+        <p>{text.length > 0 ? text : "Nothing to preview"} </p>
       </div>
     </>
   );
