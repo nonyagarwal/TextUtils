@@ -23,10 +23,7 @@ export default function TextForm(props) {
     props.showAlert("Text converted to bold", "danger");
   };
   const oncopyclick = () => {
-    let text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
-    document.getSelection().removeAllRanges();
+    navigator.clipboard.writeText(text);
     props.showAlert("Text copied", "success");
   };
   const onextraspaceclick = () => {
@@ -40,7 +37,7 @@ export default function TextForm(props) {
     //   return text.split(" ").length - 1;
     // } else {
     //   return text.split(" ").length;}
-    return text.split(" ").filter((element)=>element.length!==0).length;
+    return text.split(/\s+/).filter((element)=>element.length!==0).length;
   };
   const onchange = (event) => {
     setText(event.target.value);
@@ -95,12 +92,12 @@ export default function TextForm(props) {
         }`}
       >
         <h1 className="my-2">Text-Summary</h1>
-        You entered :<br />
+        You entered : {text}<br />
         Words: {wordcount()}
         <br />
         Characters: {text.length}
         <br />
-        Time taken to read the text: {0.008 * text.split(" ").filter((element)=>element.length!==0).length}
+        Time taken to read the text: {0.008 * text.split(/\s+/).filter((element)=>element.length!==0).length}
         <h3 className= "my-2">Preview</h3>
         <p>{text.length > 0 ? text : "Nothing to preview"} </p>
       </div>
